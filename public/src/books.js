@@ -1,5 +1,13 @@
 const { findAccountById } = require("./accounts")
 
+const copyArray = ((array) => {
+  const copy = []
+  array.forEach(element => {
+    copy.push(element)
+  });
+  return copy
+})
+
 function findAuthorById(authors, id) {
   return authors.find(author => author.id === id)
 }
@@ -22,8 +30,9 @@ function partitionBooksByBorrowedStatus(books) {
 // the properties of the corresponding account have been added
 function getBorrowersForBook(book, accounts) {
   const { borrows } = book 
-  while (borrows.length > 10) borrows.pop()
-  return borrows.map(borrow => {
+  const borrowsCopy = copyArray(borrows)
+  while (borrowsCopy.length > 10) borrowsCopy.pop()
+  return borrowsCopy.map(borrow => {
     const id = borrow.id
     const account = findAccountById(accounts, id)
     for (let key in account) {

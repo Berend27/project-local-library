@@ -8,33 +8,6 @@ function sortAccountsByLastName(accounts) {
   })
 }
 
-const accounts = [
-  {
-    id: "5f446f2ecfaf0310387c9603",
-    picture: "https://api.adorable.io/avatars/75/esther.tucker@zillacon.me",
-    age: 25,
-    name: {
-      first: "Esther",
-      last: "Tucker",
-    },
-    company: "ZILLACON",
-    email: "esther.tucker@zillacon.me",
-    registered: "Thursday, May 28, 2015 2:51 PM",
-  },
-  {
-    id: "5f446f2ed46724f41c9fc431",
-    picture: "https://api.adorable.io/avatars/75/ferrell.morris@ecolight.com",
-    age: 35,
-    name: {
-      first: "Ferrell",
-      last: "Morris",
-    },
-    company: "ECOLIGHT",
-    email: "ferrell.morris@ecolight.com",
-    registered: "Thursday, February 8, 2018 1:16 PM",
-  }
-]
-
 function getTotalNumberOfBorrows(account, books) {
   // get the id from the account
   // reduce the books array to a sum of times the account id appears
@@ -95,6 +68,7 @@ function getBooksPossessedByAccount(account, books, authors) {
   })
 }
 
+// todo: delete this
 let testAccount = {
   id: "5f446f2e2cfa3e1d234679b9",
   picture: "https://api.adorable.io/avatars/75/esther.tucker@zillacon.me",

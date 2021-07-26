@@ -1,5 +1,7 @@
 const { partitionBooksByBorrowedStatus } = require("./books")
 
+const getTopFive = (array) => array.length > 5 ? array.slice(0, 5) : array
+
 function getTotalBooksCount(books) {
   return books.length
 }
@@ -8,71 +10,52 @@ function getTotalAccountsCount(accounts) {
   return accounts.length
 }
 
-const theBooks = [
-  {
-    id: "5f447132d487bd81da01e25e",
-    title: "sit eiusmod occaecat eu magna",
-    genre: "Science",
-    authorId: 8,
-    borrows: [
-      {
-        id: "5f446f2e2cfa3e1d234679b9",
-        returned: false,
-      }
-    ],
-  },
-  {
-    id: "5f4471329627160be1e8ce92",
-    title: "esse ea veniam non occaecat",
-    genre: "Classics",
-    authorId: 10,
-    borrows: [
-      {
-        id: "5f446f2ed3609b719568a415",
-        returned: false,
-      },
-      {
-        id: "5f446f2ec32d71dabec35b06",
-        returned: true,
-      }
-    ],
-  },
-  {
-    id: "5f44713265e5d8d17789beb0",
-    title: "tempor occaecat fugiat",
-    genre: "Travel",
-    authorId: 16,
-    borrows: [
-      {
-        id: "5f446f2e4eff1030e7316861",
-        returned: true,
-      },
-      {
-        id: "5f446f2ecc5c4787c403f844",
-        returned: true,
-      }
-    ]
-  }
-]
-
 function getBooksBorrowedCount(books) {
   const borrowed = partitionBooksByBorrowedStatus(books)[0]
   return borrowed.length
 }
 
+// returns [{name, count}]
+// returns the top 5, sorted by count in descending order
 function getMostCommonGenres(books) {
-  /*
-  use reduce to form an object that has a key for 
-  each genre that is come across and a corresponding
-  value for the number of times it appears.
-  if the value is already trusy, increment it
-  */
- 
+  const genresObject = books.reduce((genres, book) => {
+    genres[book.genre] = genres[book.genre] ? genres[book.genre] += 1 : 1
+    return genres
+  }, {})
+  const genreArray = []
+  for (let genre in genresObject) {
+    genreArray.push({name: genre, count: genresObject[genre]})
+  }
+  genreArray.sort((first, second) => second.count - first.count)
+  return genreArray.length > 5 ? genreArray.slice(0, 5) : genreArray
 }
 
-function getMostPopularBooks(books) {}
+// returns [{name, count}] of the top five books, based on number of borrows
+function getMostPopularBooks(books) {
+  const rankedBooks = books.map(book => { 
+    return {
+    name : book.title, 
+    count : book.borrows.length,
+    }
+  })
+  rankedBooks.sort((first, second) => second.count - first.count)
+  return getTopFive(rankedBooks)
+}
 
-function getMostPopularAuthors(books, authors) {}
+function getMostPopularAuthors(books, authors) {
+  const namesWithCounts = authors.map(author => {
+    // get the books with the author id
+    const booksByAuthor = books.filter(book => book.authorId === author.id)
+    // get the number of times those books have been borrowed
+    const count = booksByAuthor.reduce((total, book) => total + book.borrows.length, 0)
+    return {
+      name : `${author.name.first} ${author.name.last}`,
+      count : count
+    }
+  })
+  namesWithCounts.sort((first, second) => second.count - first.count)
+  return getTopFive(namesWithCounts)
+}
 
 module.exports = {
   getTotalBooksCount,

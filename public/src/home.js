@@ -1,6 +1,6 @@
 const { partitionBooksByBorrowedStatus } = require("./books")
 
-const getTopFive = (array) => array.length > 5 ? array.slice(0, 5) : array
+const getFirstFive = (array) => array.length > 5 ? array.slice(0, 5) : array
 
 function getTotalBooksCount(books) {
   return books.length
@@ -39,7 +39,7 @@ function getMostPopularBooks(books) {
     }
   })
   rankedBooks.sort((first, second) => second.count - first.count)
-  return getTopFive(rankedBooks)
+  return getFirstFive(rankedBooks)
 }
 
 function getMostPopularAuthors(books, authors) {
@@ -54,7 +54,7 @@ function getMostPopularAuthors(books, authors) {
     }
   })
   namesWithCounts.sort((first, second) => second.count - first.count)
-  return getTopFive(namesWithCounts)
+  return getFirstFive(namesWithCounts)
 }
 
 module.exports = {
